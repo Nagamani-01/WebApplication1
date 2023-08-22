@@ -38,7 +38,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpDelete]
-        public int Delete(int id)
+        public int DeleteEmployeeById(int id)
         {
             using (EmployeeDBEntites context = new EmployeeDBEntites())
             {
