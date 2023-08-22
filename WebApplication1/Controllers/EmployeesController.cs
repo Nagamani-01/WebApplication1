@@ -8,6 +8,7 @@ namespace WebApplication1.Controllers
 {
     public class EmployeesController : ApiController
     {
+        // to load employees
         [HttpGet]
         public IEnumerable<Employee> LoadALLEmployees(string gender="All")
         {
