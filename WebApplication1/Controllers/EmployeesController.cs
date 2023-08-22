@@ -19,7 +19,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public Employee Get(int id)
+        public Employee GetEmployeeById(int id)
         {
             using (EmployeeDBEntites entites = new EmployeeDBEntites())
             {
