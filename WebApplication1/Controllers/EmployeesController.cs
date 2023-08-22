@@ -2,6 +2,8 @@
 using EmployeeServices;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace WebApplication1.Controllers
@@ -10,11 +12,24 @@ namespace WebApplication1.Controllers
     {
         // to load employees
         [HttpGet]
-        public IEnumerable<Employee> LoadALLEmployees(string gender="All")
+        // public IEnumerable<Employee> LoadALLEmployees(string gender="All")
+        public HttpResponseMessage LoadALLEmployees(string gender = "All")
         {
             using (EmployeeDBEntites entites = new EmployeeDBEntites())
             {
-                return entites.Employees.ToList();
+                switch (gender.ToLower())
+                {
+                    case "all":
+                        return Request.CreateResponse(HttpStatusCode.OK, entites.Employees.ToList());
+                    case "male":
+                        return Request.CreateResponse(HttpStatusCode.OK, entites.Employees.Where(e => e.Gender.ToLower() == "male").ToList());
+                    case "female":
+                        return Request.CreateResponse(HttpStatusCode.OK, entites.Employees.Where(e => e.Gender.ToLower() == "Female").ToList());
+
+                    default:
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Value for gender must be male, female or ALL." + gender + "is invalid.");
+                }
+
             }
         }
 
@@ -52,7 +67,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPut]
-        public Employee Put(Employee employee)
+        public Employee Put([FromBody]int id,[FromUri]Employee employee)
         {
             var employeeFound = new Employee();
             using (EmployeeDBEntites context = new EmployeeDBEntites())
